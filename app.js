@@ -1,8 +1,10 @@
 var express = require('express'),
-	serverHelper = require('./serverHelper');
+	serverHelper = require('./serverHelper'),
+	amazonHelper = require('./amazonHelper');
 
 var app = module.exports = express.createServer();
 app = serverHelper.configureApp(app);
+
 
 //HTML routes
 
@@ -23,23 +25,6 @@ app.get('/about', function(req, res){
 });
 
 
-var books = [
-	{
-		title:'A book',
-		oldPrice:'2',
-		newPrice:'1'
-	},
-	{
-		title:'B book',
-		oldPrice:'4',
-		newPrice:'2'
-	},
-	{
-		title:'C book',
-		oldPrice:'8',
-		newPrice:'4'
-	}
-];
 
 var audio = [
 	{
@@ -54,6 +39,26 @@ var audio = [
 	}
 ];
 
+var movies = [
+	{
+		title:'A movie',
+		oldPrice:'2',
+		newPrice:'1'
+	},
+	{
+		title:'B movie',
+		oldPrice:'4',
+		newPrice:'2'
+	},
+	{
+		title:'C movie',
+		oldPrice:'8',
+		newPrice:'4'
+	}
+];
+
+var books = null; //Filled before server start
+
 //JSON routes
 
 app.get('/books', function(req, res){
@@ -61,10 +66,19 @@ app.get('/books', function(req, res){
 });
 
 app.get('/audio', function(req, res){
-	serverHelper.sendAsJson(books,res);
+	serverHelper.sendAsJson(audio,res);
+});
+
+app.get('/movies', function(req, res){
+	serverHelper.sendAsJson(movies,res);
 });
 
 
 console.log("Gekiyasu server starting...");
-app.listen(8080);
-console.log("Listening on port %d", app.address().port);
+amazonHelper.refreshBooksArray(function(err,booksArray){
+	if (err) throw err;
+	books = booksArray;
+	
+	app.listen(8080);
+	console.log("Listening on port %d", app.address().port);
+});
