@@ -1,16 +1,10 @@
-var express = require('express');
+var express = require('express'),
+	serverHelper = require('./serverHelper');
+
 var app = module.exports = express.createServer();
+app = serverHelper.configureApp(app);
 
-app.configure(function(){
-	app.set('views', __dirname + '/views');
-	app.set('view engine', 'hbs');
-	app.use(express.bodyParser());
-	app.use(express.methodOverride());
-	app.use(app.router);
-	app.use(express.static(__dirname + '/public'));
-});
-
-app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+//HTML routes
 
 app.get('/', function(req, res){
 	res.render('index', {});
@@ -27,6 +21,49 @@ app.get('/products', function(req, res){
 app.get('/about', function(req, res){
 	res.render('about', {});
 });
+
+
+var books = [
+	{
+		title:'A book',
+		oldPrice:'2',
+		newPrice:'1'
+	},
+	{
+		title:'B book',
+		oldPrice:'4',
+		newPrice:'2'
+	},
+	{
+		title:'C book',
+		oldPrice:'8',
+		newPrice:'4'
+	}
+];
+
+var audio = [
+	{
+		title:'A audio',
+		oldPrice:'2',
+		newPrice:'1'
+	},
+	{
+		title:'B audio',
+		oldPrice:'4',
+		newPrice:'2'
+	}
+];
+
+//JSON routes
+
+app.get('/books', function(req, res){
+	serverHelper.sendAsJson(books,res);
+});
+
+app.get('/audio', function(req, res){
+	serverHelper.sendAsJson(books,res);
+});
+
 
 console.log("Gekiyasu server starting...");
 app.listen(8080);
