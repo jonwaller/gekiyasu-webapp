@@ -3,7 +3,7 @@ var http = require('http')
 	fs = require('fs');
 
 function _downloadBooksFeed(callback){
-	console.log('Downloading books.rss');
+	console.log('Downloading books.rss...');
 
 	var options = {
 		host: 'www.amazon.co.jp',
@@ -21,13 +21,13 @@ function _downloadBooksFeed(callback){
 		});
 
 		res.on('end', function(){
+			console.log('Downloaded. Length:'+fileData.length);
 			callback(null, fileData);
 		});
 	});
 }
 
 function refreshBooksArray(callback){
-	console.log('Refreshing books.rss');
 
 	_downloadBooksFeed(function(err, booksRssFileData){
 		if (err) throw err;
@@ -42,10 +42,17 @@ function refreshBooksArray(callback){
 			if (channelItem=='item'){
 				var i=0;
 				for(var productItem in booksObjectJson.rss.channel[channelItem]){
-					productList[i]={}
-					productList[i].title=booksObjectJson.rss.channel[channelItem][productItem].title;
-					productList[i].link=booksObjectJson.rss.channel[channelItem][productItem].link;
-					productList[i].pubDate=booksObjectJson.rss.channel[channelItem][productItem].pubDate;
+					
+					var product={};
+					product.title=booksObjectJson.rss.channel[channelItem][productItem].title;
+					product.link=booksObjectJson.rss.channel[channelItem][productItem].link;
+					product.pubdate=booksObjectJson.rss.channel[channelItem][productItem].pubdate;
+					
+					productList[i]={};
+					productList[i].title=product.title.trim();
+					productList[i].link=product.link.trim();
+					productList[i].pubDate=product.pubdate.trim();
+
 					i++;
 				}
 			}
