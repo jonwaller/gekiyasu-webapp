@@ -1,1 +1,114 @@
-Products
+<!DOCTYPE html>
+<html lang="ja">
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>激安専門ECサイト</title> 
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
+	<link rel="apple-touch-icon" href="">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> 
+	<script>
+		var makeItemsHtml = function(itemsObject){
+
+			var html="<br>";
+			for (var makeItemsHtml = 0; makeItemsHtml < 20; makeItemsHtml++){
+				if (makeItemsHtml>itemsObject.length-1) break; 　　　
+				html=html+itemsObject[makeItemsHtml].title+"<br>";
+			}
+
+			return html;
+		}
+
+		$(document).ready(function(){
+			$(".P25").click(function(event){
+				var buttonName = event.srcElement.id;
+				//Choose product type
+
+				jQuery.ajax({
+					url: '/'+buttonName+'/',
+					success: function(items){
+						var productListHtml = makeItemsHtml(items);
+							$("#productList").html(buttonName+" "+productListHtml);
+					}
+				});
+
+			});
+		});
+	</script>
+	<style>
+		div#title{
+			font-size:x-large;
+			width:100%;
+			float:left;
+			text-align: center;
+			color:red;
+			background-color:white;
+			top:10px;
+		}
+
+         
+        div#productList{
+        	background-color: white;
+            font-size:large;
+            float:center;
+            text-align: center;
+            padding:60px;
+            top:40px;
+        }
+       
+
+		div.menu{
+			bottom:0px;
+			width:100%;
+			position:absolute;
+		}
+
+		div.P25{
+			width:24%;
+			float:left;
+			text-align: center;
+			border: 1px white solid;
+			background-color:#eeeeee;
+		}
+
+		div.P24{
+			width:24%;
+			float:left;
+			text-align: center;
+			border: 1px white solid;
+			background-color:#eeeeee;
+		}
+
+		div.footer{
+			width:95%;
+			bottom:40px;
+			position:absolute;
+			font-size:x-small;
+			float:center;
+			text-align: center;
+		}
+
+	</style>
+</head>
+
+<body>
+
+	<div id="title"><a href="/"><img src="/img/sitelogo.jpg" alt="激安専門ECサイト" /></a></div>
+
+	<div id="productList">[Fill me]</div>
+
+	<a href="http://line.naver.jp/R/msg/text/?LINE%E3%81%A7%E9%80%81%E3%82%8B%0D%0Ahttp%3A%2F%2Fline.naver.jp%2F"><img src="/img/linebutton_86x20.png" width="86px" height="20px" alt="LINEで送る" /></a>
+
+	<div class="menu">
+		<div class="P25" id="electronics">家電</div>
+		<div class="P25" id="books">本</div>
+		<div class="P25" id="dvd">DVD</div>
+		<div class="P24"><a href="/categories/">カテゴリ一覧</a>
+	</div>
+
+	<div class="footer">
+			<a href="/about">サイト情報</a>
+	</div>
+
+</body>
+</html>

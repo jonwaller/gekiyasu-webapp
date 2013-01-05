@@ -25,39 +25,9 @@ app.get('/about', function(req, res){
 });
 
 
-
-var audio = [
-	{
-		title:'A audio',
-		oldPrice:'2',
-		newPrice:'1'
-	},
-	{
-		title:'B audio',
-		oldPrice:'4',
-		newPrice:'2'
-	}
-];
-
-var movies = [
-	{
-		title:'A movie',
-		oldPrice:'2',
-		newPrice:'1'
-	},
-	{
-		title:'B movie',
-		oldPrice:'4',
-		newPrice:'2'
-	},
-	{
-		title:'C movie',
-		oldPrice:'8',
-		newPrice:'4'
-	}
-];
-
 var books = null; //Filled before server start
+var electronics = null;
+var movies = null;
 
 //JSON routes
 
@@ -65,20 +35,29 @@ app.get('/books', function(req, res){
 	serverHelper.sendAsJson(books,res);
 });
 
-app.get('/audio', function(req, res){
-	serverHelper.sendAsJson(audio,res);
+app.get('/electronics', function(req, res){
+	serverHelper.sendAsJson(electronics,res);
 });
 
-app.get('/movies', function(req, res){
+app.get('/dvd', function(req, res){
 	serverHelper.sendAsJson(movies,res);
 });
-
 
 console.log("Gekiyasu server starting...");
 amazonHelper.refreshBooksArray(function(err,booksArray){
 	if (err) throw err;
 	books = booksArray;
 	
-	app.listen(8080);
-	console.log("Listening on port %d", app.address().port);
+		amazonHelper.refreshElectronicsArray(function(err,electronicsArray){
+			if (err) throw err;
+			electronics = electronicsArray;
+
+			amazonHelper.refreshMoviesArray(function(err,moviesArray){
+				if (err) throw err;
+				movies = moviesArray;
+
+					app.listen(8080);
+					console.log("Listening on port %d", app.address().port);
+			});
+		});
 });
