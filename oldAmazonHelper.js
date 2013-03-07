@@ -2,39 +2,65 @@ var xml2json = require("node-xml2json");
 var http = require('http')
 	fs = require('fs');
 
-var OperationHelper = require('apac').OperationHelper;
+//books
+function _downloadBooksFeed(callback){
+	console.log('Downloading books data from Amazon...');
 
-var opHelper = new OperationHelper({
-    awsId:     'AKIAJWN4LDVS5VD4CMAA',
-    awsSecret: 'j3XwzYPU8yV7o1G64QA61QNQnFO5bpQBsdOpvR8E',
-    assocId:   '[YOUR ASSOCIATE TAG HERE]'
-});
+	var options = {
+		host: 'www.amazon.co.jp',
+		port: 80,
+		path: '/gp/rss/bestsellers/books/'
+	}
 
+	var request = http.get(options, function(res){
+		var fileData = ''
+		//res.setEncoding('binary');
+		res.setEncoding('utf8');
+
+		res.on('data', function(chunk){
+			fileData += chunk
+		});
+
+		res.on('end', function(){
+			console.log('Downloaded. Length: '+fileData.length+' bytes.');
+			callback(null, fileData);
+		});
+	});
+}
 
 function refreshBooksArray(callback){
 
-	opHelper.execute(
-		'ItemSearch', {
-			'SearchIndex': 'Books',
-			'Keywords': 'harry potter',
-			'ResponseGroup': 'ItemAttributes,Offers'
-		}, function(err,result){
-			if (err) return callback(err,result);
-			var itemsResultObject=result.ItemSearchResponse.Items;
-			console.log(itemsResultObject[0]);
-			var itemsArray=itemsResultObject[0].Item;
-			
-			console.log('all',itemsArray[0]);
-			console.log('ItemAttributes',itemsArray[0].ItemAttributes[0]);
-			console.log('OfferSummary',itemsArray[0].OfferSummary[0]);
-			console.log('ItemLinks',itemsArray[0].ItemLinks[0].ItemLink);
-			console.log();
-			console.log('Author',itemsArray[0].ItemAttributes[0].Author[0]);
-			console.log('Title',itemsArray[0].ItemAttributes[0].Title[0]);
-			console.log('Price',itemsArray[0].ItemAttributes[0].ListPrice[0].FormattedPrice[0]);
-				
-			callback(err,result);
-		});
+	_downloadBooksFeed(function(err, booksRssFileData){
+		if (err) throw err;
+		
+		booksRssFileData=booksRssFileData.replace(/<!\[CDATA\[.*?\]\]>/g,"");
+		var booksObjectJson = xml2json.parser(booksRssFileData);
+
+		var productList=[];
+
+		//rss.channel.item.title
+		for (var channelItem in booksObjectJson.rss.channel){
+			if (channelItem=='item'){
+				var i=0;
+				for(var productItem in booksObjectJson.rss.channel[channelItem]){
+					
+					var product={};
+					product.title=booksObjectJson.rss.channel[channelItem][productItem].title;
+					product.link=booksObjectJson.rss.channel[channelItem][productItem].link;
+					product.pubdate=booksObjectJson.rss.channel[channelItem][productItem].pubdate;
+					
+					productList[i]={};
+					productList[i].title=product.title.trim();
+					productList[i].link=product.link.trim();
+					productList[i].pubDate=product.pubdate.trim();
+
+					i++;
+				}
+			}
+		}
+
+		callback(null, productList);
+	});
 }
 
 //-----------------------------------
