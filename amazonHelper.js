@@ -17,21 +17,19 @@ function refreshBooksArray(callback){
 		'ItemSearch', {
 			'SearchIndex': 'Books',
 			'Keywords': 'harry potter',
-			'ResponseGroup': 'ItemAttributes,Offers'
+			'ResponseGroup': 'ItemAttributes,Offers,Images,EditorialReview'
 		}, function(err,result){
 			if (err) return callback(err,result);
 			var itemsResultObject=result.ItemSearchResponse.Items;
-			console.log(itemsResultObject[0]);
 			var itemsArray=itemsResultObject[0].Item;
 			
-			console.log('all',itemsArray[0]);
-			console.log('ItemAttributes',itemsArray[0].ItemAttributes[0]);
-			console.log('OfferSummary',itemsArray[0].OfferSummary[0]);
-			console.log('ItemLinks',itemsArray[0].ItemLinks[0].ItemLink);
 			console.log();
 			console.log('Author',itemsArray[0].ItemAttributes[0].Author[0]);
 			console.log('Title',itemsArray[0].ItemAttributes[0].Title[0]);
 			console.log('Price',itemsArray[0].ItemAttributes[0].ListPrice[0].FormattedPrice[0]);
+			console.log('Image',itemsArray[0].MediumImage[0].URL[0]);
+			console.log('Description',itemsArray[0].EditorialReviews[0].EditorialReview[0].Content[0]);
+			console.log();
 				
 			callback(err,result);
 		});
