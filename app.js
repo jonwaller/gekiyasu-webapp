@@ -45,6 +45,7 @@ app.get('/dvd', function(req, res){
 
 console.log("Gekiyasu server starting...");
 amazonHelper.refreshBooksArray(function(err,booksArray){
+	
 	if (err) throw err;
 	books = booksArray;
 	

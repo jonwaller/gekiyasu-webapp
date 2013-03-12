@@ -23,15 +23,23 @@ function refreshBooksArray(callback){
 			var itemsResultObject=result.ItemSearchResponse.Items;
 			var itemsArray=itemsResultObject[0].Item;
 			
-			console.log();
-			console.log('Author',itemsArray[0].ItemAttributes[0].Author[0]);
-			console.log('Title',itemsArray[0].ItemAttributes[0].Title[0]);
-			console.log('Price',itemsArray[0].ItemAttributes[0].ListPrice[0].FormattedPrice[0]);
-			console.log('Image',itemsArray[0].MediumImage[0].URL[0]);
-			console.log('Description',itemsArray[0].EditorialReviews[0].EditorialReview[0].Content[0]);
-			console.log();
+			var simpleResults={};
+
+			for (var itemId in itemsArray){
+				var item=itemsArray[itemId];
+
+				var resultItem={};
+
+				if (item.ItemAttributes[0].Author) resultItem.author=item.ItemAttributes[0].Author[0];
+				if (item.ItemAttributes[0].Title) resultItem.title=item.ItemAttributes[0].Title[0];
+				if (item.ItemAttributes[0].ListPrice) resultItem.price=item.ItemAttributes[0].ListPrice[0].FormattedPrice[0];
+				if (item.MediumImage.Author) resultItem.image=item.MediumImage[0].URL[0];
+				if (item.EditorialReviews) resultItem.description=item.EditorialReviews[0].EditorialReview[0].Content[0];
 				
-			callback(err,result);
+				simpleResults[resultItem.title]=resultItem;
+			}
+
+			callback(err,simpleResults);
 		});
 }
 

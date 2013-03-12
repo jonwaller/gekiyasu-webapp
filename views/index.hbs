@@ -8,6 +8,30 @@
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
     <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+  <script>
+    var makeItemsHtml = function(itemsObject){
+
+
+      var html="";
+      for (var itemId in itemsObject){
+        html=html+'<li><a href="#home">'+itemsObject[itemId].title+'</a></li>';
+      }
+
+      return html;
+    }
+
+    $(document).ready(function(){
+      
+        jQuery.ajax({
+          url: '/books',
+          success: function(items){
+            var productListHtml = makeItemsHtml(items);
+              $("#book div ul").html(productListHtml);
+          }
+        });
+
+      });
+  </script>
 </head>
 
 //ホームページ

@@ -1,4 +1,5 @@
-var express = require('express');
+var express = require('express'),
+	_ = require('underscore');
 
 function configureApp(app){
 
@@ -16,11 +17,14 @@ function configureApp(app){
 	return app;
 }
 
-function sendAsJson(dataObjectToSend, responseStream){
-	var jsonDataToSend = JSON.stringify(dataObjectToSend);
-	
+function sendAsJson(dataToSend, responseStream){
+
+
+	var dataObjectToSend=_.extend({}, dataToSend);
+	var jsonDataToSend = JSON.stringify(dataToSend);
+
 	responseStream.contentType('application/json');
-	responseStream.send(jsonDataToSend);
+	responseStream.send(dataToSend);
 }
 
 exports.configureApp = configureApp;
