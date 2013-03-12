@@ -1,28 +1,122 @@
-<html>
+
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-	<title>Top page</title>
-	<style>
-		body{
-			background:lightgrey;
-			margin:20px;
-			font-family:sans-serif
-		}
-		img{
-			border:5px
-		}
-		div{
-			text-align:center
-		}
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>hello world</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
 </head>
+
+//ホームページ
 <body>
-	<div>
-		<p>
-			<img src="/img/sheep.jpg" alt="It's a sheep." width="200" />
-		</p>
-		<p>
-			<a href="/products/">商品ページ</a>　|　<a href="/categories/">カテゴリ</a>
-		</p>
-	</div>
+    <div data-role="page" id="home">
+
+       <div data-role="header" data-theme="a"　style="text-align:center" >
+           <p><img src="sitelogo.jpg" class="center"/></p>
+       </div>
+
+       <div data-role="content">
+          <h3>激安な商品が簡単に探せる！</h3>
+          <ul data-role="listview" data-inset="true" data-split-theme="a">
+            <li data-role=list-divider>カテゴリ</li>
+            <li><a href="#book">本・コミック・雑誌</a></li>
+            <li><a href="#music">DVD・ミュージック・ゲーム</a></li>
+            <li><a href="#menu">家電</a></li>
+            <li><a href="#menu">PC</a></li>
+            <li><a href="#menu">キッチン</a></li>
+            <li><a href="#menu">食品＆飲料</a></li>
+            <li><a href="#menu">ヘルス＆ビューティー</a></li>
+            <li><a href="#menu">ファッション</a></li>
+            <li><a href="#menu">スポーツ＆アウトドア</a></li>
+          </ul>
+       </div>
+
+
+
+     <a href="https://twitter.com/share" class="twitter-share-button" data-via="nix778">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+       <div data-role="footer">
+
+            <h4>Copy rights 激安応援隊</h4>
+       </div>
+   </div>
+
+
+//本・コミック・雑誌ページ
+   <div data-role="page" id="book"　data-content-theme="a">
+       <div data-role="header" data-theme="a"　>
+            <p><img src="sitelogo.jpg"/></p>
+       </div>
+
+        <div data-role="content">
+          <ul data-role="listview" data-inset="true" data-split-theme="a" data-filter="true">
+            <li data-role=list-divider>本・コミック・雑誌</li>
+            <li><a href="#home"><img src="jpeg.jpeg" />ONE PIECE</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />HUNTER × HUNTER</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />MENS NONNO</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />CHOKI CHOKI</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />経営の哲学</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />ノマドの町</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />IQ84</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />クーリエジャポン</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />スポーツ</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />MENS NONNO</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />CHOKI CHOKI</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />経営の哲学</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />ノマドの町</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />IQ84</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />クーリエジャポン</a></li>
+
+          </ul>
+       </div>
+
+
+       <div data-role="footer">
+            <h4>Copyright 2012</h4>
+       </div>
+   </div>
+
+
+//DVD・ミュージック・ゲーム ページ
+   <div data-role="page" id="music"　data-content-theme="a">
+       <div data-role="header" data-theme="a"　>
+            <p><img src="sitelogo.jpg"/></p>
+       </div>
+
+        <div data-role="content">
+          <ul data-role="listview" data-inset="true" data-split-theme="a" data-filter="true">
+            <li data-role=list-divider>DVD・ミュージック・ゲーム</li>
+            <li><a href="#home"><img src="sum41.jpeg" />SUM41</a></li>
+            <li><a href="#home"><img src="muse.jpeg" />MUSE</a></li>
+            <li><a href="#home"><img src="sum2.jpeg" />NIRVANA</a></li>
+            <li><a href="#home"><img src="muse.jpeg" />AKB48</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />きゃりーぱみゅぱみゅ</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />HEOES</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />戦国無双3</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />どうぶつの森</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />SOCIAL NETWORK</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />ポルノグラフィティ</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />ポケットモンスター赤</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />クロノトリガー</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />Mr.Children</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />千と千尋の神隠し</a></li>
+            <li><a href="#home"><img src="jpeg.jpeg" />BLACK SWAN</a></li>
+
+          </ul>
+       </div>
+
+
+       <div data-role="footer">
+            <h4>Copyright 2012</h4>
+       </div>
+   </div>
+
+
+
+
 </body>
 </html>
