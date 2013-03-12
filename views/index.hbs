@@ -11,10 +11,11 @@
   <script>
     var makeItemsHtml = function(itemsObject){
 
-
+      console.log(itemsObject);
+      
       var html="";
       for (var itemId in itemsObject){
-        html=html+'<li><a href="#home">'+itemsObject[itemId].title+'</a></li>';
+        html=html+'<li><a href="#home"><img src="'+itemsObject[itemId].image+'" width="80" height="80" />'+itemsObject[itemId].title+'</a></li>';
       }
 
       return html;
