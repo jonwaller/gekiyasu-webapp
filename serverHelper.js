@@ -19,8 +19,6 @@ function configureApp(app){
 
 function sendAsJson(dataToSend, responseStream){
 
-
-	var dataObjectToSend=_.extend({}, dataToSend);
 	var jsonDataToSend = JSON.stringify(dataToSend);
 
 	responseStream.contentType('application/json');

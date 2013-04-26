@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>激安専門ECサイト</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script>
+    var q="{{q}}";
+
+    var makeItemsHtml = function(itemsObject){
+
+      var html="";
+      for (var itemId in itemsObject){
+        html=html+
+                '<li>' +
+                    '<a href="#home">' +
+                        '<img src="'+itemsObject[itemId].image+'" width="80" height="80" />' +
+                        itemsObject[itemId].title+
+                    '</a>' +
+                '</li>';
+      }
+      return html;
+    }
+
+    $(document).ready(function(){
+
+        $("#content").hide();
+        if (q){
+            console.log('Searching for '+q);
+            $.get("/search", {"q":q}, function(items){
+
+                    $("#content").show();
+                    console.log(items);
+                    var productListHtml = makeItemsHtml(items);
+                    $("#items div ul").html(productListHtml);
+                }
+            );
+        }
+    });
+
+  </script>
+</head>
+
+<body>
+
+   <div data-role="page" id="items" data-content-theme="a">
+       <div data-role="header" data-theme="a">
+            <p><img src="sitelogo.jpg"/></p>
+       </div>
+
+       <form method="get" action="/">
+           <input name="q" type="text" /><input type="submit" />
+       </form>
+
+        <div id="content" data-role="content">
+          <ul data-role="listview" data-inset="true" data-split-theme="a" data-filter="false">
+            <li data-role=list-divider>本・コミック・雑誌</li>
+          </ul>
+       </div>
+
+       <div data-role="footer">
+            <h4>Copyright 2012</h4>
+       </div>
+   </div>
+
+</body>
+</html>

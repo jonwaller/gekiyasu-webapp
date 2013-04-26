@@ -1,147 +1,187 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>激安専門ECサイト</title>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
     <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
-  <script>
-    var makeItemsHtml = function(itemsObject){
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-      console.log(itemsObject);
-      
-      var html="";
-      for (var itemId in itemsObject){
-        html=html+'<li><a href="#home"><img src="'+itemsObject[itemId].image+'" width="80" height="80" />'+itemsObject[itemId].title+'</a></li>';
-      }
+    <!-- Le styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 20px;
+            padding-bottom: 60px;
+        }
 
-      return html;
-    }
+            /* Custom container */
+        .container {
+            margin: 0 auto;
+            max-width: 1000px;
+        }
+        .container > hr {
+            margin: 60px 0;
+        }
 
-    $(document).ready(function(){
-      
-        jQuery.ajax({
-          url: '/books',
-          success: function(items){
-            var productListHtml = makeItemsHtml(items);
-              $("#book div ul").html(productListHtml);
-          }
+            /* Main marketing message and sign up button */
+        .jumbotron {
+            margin: 80px 0;
+            text-align: center;
+        }
+        .jumbotron h1 {
+            font-size: 100px;
+            line-height: 1;
+        }
+        .jumbotron .lead {
+            font-size: 24px;
+            line-height: 1.25;
+        }
+        .jumbotron .btn {
+            font-size: 21px;
+            padding: 14px 24px;
+        }
+
+            /* Supporting marketing content */
+        .marketing {
+            margin: 60px 0;
+        }
+        .marketing p + h4 {
+            margin-top: 28px;
+        }
+
+
+            /* Customize the navbar links to be fill the entire space of the .navbar */
+        .navbar .navbar-inner {
+            padding: 0;
+        }
+        .navbar .nav {
+            margin: 0;
+            display: table;
+            width: 100%;
+        }
+        .navbar .nav li {
+            display: table-cell;
+            width: 1%;
+            float: none;
+        }
+        .navbar .nav li a {
+            font-weight: bold;
+            text-align: center;
+            border-left: 1px solid rgba(255,255,255,.75);
+            border-right: 1px solid rgba(0,0,0,.1);
+        }
+        .navbar .nav li:first-child a {
+            border-left: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        .navbar .nav li:last-child a {
+            border-right: 0;
+            border-radius: 0 3px 3px 0;
+        }
+    </style>
+    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <script>
+        var q="{{q}}";
+        var searchType="{{searchType}}";
+
+        var makeItemsHtml = function(itemsObject){
+
+            var html="";
+            for (var itemId in itemsObject){
+                html=html+
+                        '<tr>' +
+                            '<td>' +
+                                '<a href="#home">' +
+                                    '<img src="'+itemsObject[itemId].image+'" ' +
+                                        'width="80" height="80" style="padding-right:20px" />' +
+                                '</a>' +
+                            '</td>' +
+                            '<td>' +
+                                '<a href="#home">' +
+                                    itemsObject[itemId].title+
+                                '</a>' +
+                                '<br /><br />'+
+                                '<strike style="color:red">'+itemsObject[itemId].listprice+'</strike> '+
+                                '<b>'+itemsObject[itemId].offerprice+'</b>'+
+                            '</td>' +
+                        '</tr>'+
+                        '<tr><td colspan="2"><hr /></td></tr>'
+                ;
+            }
+            return html;
+        }
+
+        $(document).ready(function(){
+
+            if (typeof searchType == "undefined" || !searchType) searchType="";
+
+            $("#content").hide();
+            if (q){
+                console.log('Searching for',q,'in',searchType);
+                $.get("/search", {"q":q, "searchType":searchType}, function(items){
+
+                            $("#content").show();
+                            console.log(items);
+                            var productListHtml = makeItemsHtml(items);
+                            $("#items").html(productListHtml);
+                        }
+                );
+            }
+
+            console.log(searchType);
+            if (searchType=="books") $("#booksButton").addClass("active");
+            if (searchType=="dvds") $("#dvdsButton").addClass("active");
+            if (searchType=="electronics") $("#electronicsButton").addClass("active");
         });
 
-      });
-  </script>
+    </script>
 </head>
 
-//ホームページ
 <body>
-    <div data-role="page" id="home">
 
-       <div data-role="header" data-theme="a"　style="text-align:center" >
-           <p><img src="sitelogo.jpg" class="center"/></p>
-       </div>
+<div class="container">
 
-       <div data-role="content">
-          <h3>激安な商品が簡単に探せる！</h3>
-          <ul data-role="listview" data-inset="true" data-split-theme="a">
-            <li data-role=list-divider>カテゴリ</li>
-            <li><a href="#book">本・コミック・雑誌</a></li>
-            <li><a href="#music">DVD・ミュージック・ゲーム</a></li>
-            <li><a href="#menu">家電</a></li>
-            <li><a href="#menu">PC</a></li>
-            <li><a href="#menu">キッチン</a></li>
-            <li><a href="#menu">食品＆飲料</a></li>
-            <li><a href="#menu">ヘルス＆ビューティー</a></li>
-            <li><a href="#menu">ファッション</a></li>
-            <li><a href="#menu">スポーツ＆アウトドア</a></li>
-          </ul>
-       </div>
+    <div class="masthead">
+        <h3 class="muted"><a href="/"><img src="myimg/sitelogo.jpg"/></a></h3>
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <ul class="nav">
+                        <li id="booksButton"><a href="/?q={{q}}&searchType=books">Books</a></li>
+                        <li id="dvdsButton"><a href="/?q={{q}}&searchType=dvds">DVDs</a></li>
+                        <li id="electronicsButton"><a href="/?q={{q}}&searchType=electronics">Electronics</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div><!-- /.navbar -->
+    </div>
 
+    <form method="get" action="/">
+        <input type="hidden" name="searchType" value="{{searchType}}" />
+        <table width="100%">
+           <tr height="40">
+               <td width="90%"><input name="q" type="text" value="{{q}}" style="margin-bottom:0;width:90%;height:100%" /></td>
+               <td><input type="submit" style="width:100%;height:100%" /></td>
+           </tr>
+        </table>
+    </form>
 
+    <table id="items" width="100%" cellpadding="10">
+    </table>
 
-     <a href="https://twitter.com/share" class="twitter-share-button" data-via="nix778">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <div class="footer">
+       <center><b>&copy; Gekiyasu 2013</b></center>
+    </div>
 
-       <div data-role="footer">
-
-            <h4>Copy rights 激安応援隊</h4>
-       </div>
-   </div>
-
-
-//本・コミック・雑誌ページ
-   <div data-role="page" id="book"　data-content-theme="a">
-       <div data-role="header" data-theme="a"　>
-            <p><img src="sitelogo.jpg"/></p>
-       </div>
-
-        <div data-role="content">
-          <ul data-role="listview" data-inset="true" data-split-theme="a" data-filter="false">
-            <li data-role=list-divider>本・コミック・雑誌</li>
-            <li><a href="#home"><img src="jpeg.jpeg" />ONE PIECE</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />HUNTER × HUNTER</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />MENS NONNO</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />CHOKI CHOKI</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />経営の哲学</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />ノマドの町</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />IQ84</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />クーリエジャポン</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />スポーツ</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />MENS NONNO</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />CHOKI CHOKI</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />経営の哲学</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />ノマドの町</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />IQ84</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />クーリエジャポン</a></li>
-
-          </ul>
-       </div>
-
-
-       <div data-role="footer">
-            <h4>Copyright 2012</h4>
-       </div>
-   </div>
-
-
-//DVD・ミュージック・ゲーム ページ
-   <div data-role="page" id="music"　data-content-theme="a">
-       <div data-role="header" data-theme="a"　>
-            <p><img src="sitelogo.jpg"/></p>
-       </div>
-
-        <div data-role="content">
-          <ul data-role="listview" data-inset="true" data-split-theme="a" data-filter="true">
-            <li data-role=list-divider>DVD・ミュージック・ゲーム</li>
-            <li><a href="#home"><img src="sum41.jpeg" />SUM41</a></li>
-            <li><a href="#home"><img src="muse.jpeg" />MUSE</a></li>
-            <li><a href="#home"><img src="sum2.jpeg" />NIRVANA</a></li>
-            <li><a href="#home"><img src="muse.jpeg" />AKB48</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />きゃりーぱみゅぱみゅ</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />HEOES</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />戦国無双3</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />どうぶつの森</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />SOCIAL NETWORK</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />ポルノグラフィティ</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />ポケットモンスター赤</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />クロノトリガー</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />Mr.Children</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />千と千尋の神隠し</a></li>
-            <li><a href="#home"><img src="jpeg.jpeg" />BLACK SWAN</a></li>
-
-          </ul>
-       </div>
-
-
-       <div data-role="footer">
-            <h4>Copyright 2012</h4>
-       </div>
-   </div>
-
-
-
+</div> <!-- /container -->
 
 </body>
 </html>

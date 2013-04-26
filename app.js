@@ -5,60 +5,36 @@ var express = require('express'),
 var app = module.exports = express.createServer();
 app = serverHelper.configureApp(app);
 
-
-//HTML routes
-
 app.get('/', function(req, res){
-	res.render('index', {});
+
+	var q=null;
+	var dirtyQ = req.query["q"];
+	if (dirtyQ && dirtyQ.length>0) q=dirtyQ;
+
+	var searchType="books";
+	var dirtySearchType = req.query["searchType"];
+	if (dirtySearchType && dirtySearchType.length>0) searchType=dirtySearchType;
+
+	res.render('index', {q:q,searchType:searchType});
 });
 
-app.get('/categories', function(req, res){
-	res.render('categories', {});
+app.get('/search', function(req, res){
+
+	var q=null;
+	var dirtyQ = req.query["q"];
+	if (dirtyQ && dirtyQ.length>0) q=dirtyQ;
+
+	var searchType="books";
+	var dirtySearchType = req.query["searchType"];
+	if (dirtySearchType && dirtySearchType.length>0) searchType=dirtySearchType;
+
+	console.log('getItemsFromAmazon',q,searchType);
+	amazonHelper.getItemsFromAmazon(q,searchType,function(err,searchResults){
+		if (err) return false;
+		serverHelper.sendAsJson(searchResults,res);
+	})
+
 });
 
-app.get('/products', function(req, res){
-	res.render('products', {});
-});
-
-app.get('/about', function(req, res){
-	res.render('about', {});
-});
-
-
-var books = null; //Filled before server start
-var electronics = null;
-var movies = null;
-
-//JSON routes
-
-app.get('/books', function(req, res){
-	serverHelper.sendAsJson(books,res);
-});
-
-app.get('/electronics', function(req, res){
-	serverHelper.sendAsJson(electronics,res);
-});
-
-app.get('/dvd', function(req, res){
-	serverHelper.sendAsJson(movies,res);
-});
-
-console.log("Gekiyasu server starting...");
-amazonHelper.refreshBooksArray(function(err,booksArray){
-	
-	if (err) throw err;
-	books = booksArray;
-	
-		amazonHelper.refreshElectronicsArray(function(err,electronicsArray){
-			if (err) throw err;
-			electronics = electronicsArray;
-
-			amazonHelper.refreshMoviesArray(function(err,moviesArray){
-				if (err) throw err;
-				movies = moviesArray;
-
-					app.listen(8080);
-					console.log("Listening on port %d", app.address().port);
-			});
-		});
-});
+app.listen(8080);
+console.log("Listening on port %d", app.address().port);
