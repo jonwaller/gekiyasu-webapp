@@ -2,7 +2,7 @@ var express = require('express'),
 	serverHelper = require('./serverHelper'),
 	amazonHelper = require('./amazonHelper');
 
-var app = module.exports = express.createServer();
+var app = express();
 app = serverHelper.configureApp(app);
 
 app.get('/', function(req, res){
@@ -37,4 +37,3 @@ app.get('/search', function(req, res){
 });
 
 app.listen(8080);
-console.log("Listening on port %d", app.address().port);
