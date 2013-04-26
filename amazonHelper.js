@@ -41,7 +41,9 @@ function getItemsFromAmazon(q,searchType,callback){
 					resultItem.title=item.ItemAttributes[0].Title[0];
 				if (item.ItemAttributes[0].ListPrice)
 					resultItem.listprice=item.ItemAttributes[0].ListPrice[0].FormattedPrice[0];
-				if (item.OfferSummary[0].LowestNewPrice)
+				
+				resultItem.offerprice=0;
+				if (item.OfferSummary && item.OfferSummary[0].LowestNewPrice)
 					resultItem.offerprice=item.OfferSummary[0].LowestNewPrice[0].FormattedPrice[0];
 				if (item.MediumImage)
 					resultItem.image=item.MediumImage[0].URL[0];
