@@ -1,0 +1,9 @@
+{
+  "name": "gekiyasu",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "*",
+    "apac": "*",
+    "hbs": "*"
+  }
+}

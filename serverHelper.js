@@ -1,5 +1,4 @@
-var express = require('express'),
-	_ = require('underscore');
+var express = require('express');
 
 function configureApp(app){
 
